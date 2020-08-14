@@ -1,0 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+**/.ipynb_checkpoints/
+**/.pytest_cache/
+
+# IDE
+.envtest
+.vscode/launch.json
+
+# Mac stuff
+**/.DS_Store
