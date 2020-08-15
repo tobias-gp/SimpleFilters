@@ -1,6 +1,6 @@
 # Simple Filters
 
-This is a collection of simple filters to filter a multi-dimensional time series with real-time performance. 
+This is a collection of simple filters optimized for real-time performance. The history of filtered values is kept constant after the initial filling according to the ```history_size``` specified. 
 
 ## Usage
 
@@ -17,10 +17,16 @@ Fill the history:
 self.filter.update_state([x, y, z, rotation])
 ```
 
-Get the predictions: 
+Get the last filtered item, plus future predictions specified by predict_samples: 
 ```
 result = self.filter.get_filtered_state()
 ```
+
+## Filter Strategies
+
+Currently, only few filters are implemented: 
+* **MeanFilterStrategy**: Applies a simple mean to all values along axis 0
+* **PolynomialFilterStrategy**: Returns the filtered last item (and optionally predicts the next item) of a multi-dimensional time series using a polynomial regression. The strategy can be applied to sensor data to retain smoothness while ensuring low latency and avoiding offsets with outliers. 
 
 ## Test
 
