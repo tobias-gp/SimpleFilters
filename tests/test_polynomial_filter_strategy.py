@@ -2,7 +2,7 @@ import time
 from unittest import TestCase
 import pytest
 
-from ..filter import Filter, PolynomialFilterStrategy
+from ..simple_filters import Filter, PolynomialFilterStrategy
 
 class TestCarFilter(TestCase):
 

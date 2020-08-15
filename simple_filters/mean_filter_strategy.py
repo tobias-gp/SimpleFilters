@@ -1,6 +1,6 @@
 import numpy as np
 
-from ..filter import FilterStrategy
+from . import FilterStrategy
 
 class MeanFilterStrategy(FilterStrategy): 
 

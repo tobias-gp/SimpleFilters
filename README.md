@@ -6,7 +6,7 @@ This is a collection of simple filters optimized for real-time performance. The 
 
 Set up your filter: 
 ```
-from filter import Filter, PolynomialFilterStrategy
+from simple_filters import Filter, PolynomialFilterStrategy
 
 strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2, outlier_rejection_ratio=2.0)
 filter = Filter(strategy, history_size=10)

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from ..filter import Filter, FilterStrategy, MeanFilterStrategy
+from ..simple_filters import Filter, FilterStrategy, MeanFilterStrategy
 
 import pytest
 
