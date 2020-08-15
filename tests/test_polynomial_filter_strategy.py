@@ -54,7 +54,7 @@ class TestCarFilter(TestCase):
         delta_in_ms = (time.time() - start_time)
 
         print("Execution took %f ms per filtering operation" %  delta_in_ms)
-        self.assertLessEqual(delta_in_ms, 1.0)
+        self.assertLessEqual(delta_in_ms, 2.0)
 
     def test_outliers(self): 
         strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2, outlier_rejection_ratio=2.0)
