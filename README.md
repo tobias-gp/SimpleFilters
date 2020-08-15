@@ -1,4 +1,4 @@
-# Simple Filters
+# Simple Time-Series Filters
 
 This is a collection of simple filters optimized for real-time performance. The history of filtered values is kept constant after the initial filling according to the ```history_size``` specified. 
 
