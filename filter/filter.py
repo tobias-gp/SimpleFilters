@@ -32,5 +32,5 @@ class Filter:
     def get_history(self): 
         return self.history
 
-    def get_filtered_state(self): # Detection Info
+    def get_filtered_state(self): 
         return self.strategy.apply(self.history)

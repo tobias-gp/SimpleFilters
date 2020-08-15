@@ -11,8 +11,6 @@ class PolynomialFilterStrategy(FilterStrategy):
     to the median, multiplied by the outlier_rejection_ratio
     """
 
-    number_of_dimensions = 4
-
     def __init__(self, poly_degree=3, predict_samples=1, reject_outliers=True, outlier_rejection_ratio=2.0): 
         self.poly_degree = poly_degree
         self.predict_samples = predict_samples
@@ -23,7 +21,7 @@ class PolynomialFilterStrategy(FilterStrategy):
         if history is None or history.shape[0] == 0: 
             return None
 
-        predicted_states = np.zeros((self.predict_samples, PolynomialFilterStrategy.number_of_dimensions))
+        predicted_states = np.zeros((self.predict_samples, history.shape[1]))
 
         for i in range(0,4): 
             predicted_states[:, i] = self.apply_to_series(history[:, i])
