@@ -17,7 +17,7 @@ Fill the history:
 filter.update_state([x, y, z, rotation])
 ```
 
-Get the last filtered item, plus future predictions specified by predict_samples: 
+Get the last filtered item, plus future predictions specified by ```predict_samples```: 
 ```
 result = filter.get_filtered_state()
 ```
