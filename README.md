@@ -9,17 +9,17 @@ Set up your filter:
 from filter import Filter, PolynomialFilterStrategy
 
 strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2, outlier_rejection_ratio=2.0)
-self.filter = Filter(strategy, history_size=10)
+filter = Filter(strategy, history_size=10)
 ```
 
 Fill the history: 
 ```
-self.filter.update_state([x, y, z, rotation])
+filter.update_state([x, y, z, rotation])
 ```
 
 Get the last filtered item, plus future predictions specified by predict_samples: 
 ```
-result = self.filter.get_filtered_state()
+result = filter.get_filtered_state()
 ```
 
 ## Filter Strategies
