@@ -1,5 +1,7 @@
 # Simple Time-Series Filters
 
+![Python package](https://github.com/tobias-gp/SimpleFilters/workflows/Python%20package/badge.svg)
+
 This is a collection of simple filters optimized for real-time performance. The history of filtered values is kept constant after the initial filling according to the ```history_size``` specified. 
 
 ## Usage
