@@ -23,7 +23,7 @@ class PolynomialFilterStrategy(FilterStrategy):
 
         predicted_states = np.zeros((self.predict_samples, history.shape[1]))
 
-        for i in range(0,4): 
+        for i in range(0, history.shape[1]): 
             predicted_states[:, i] = self.apply_to_series(history[:, i])
 
         return predicted_states
