@@ -10,7 +10,7 @@ class TestCarFilter(TestCase):
         self.history_size = 10
 
     def test_single(self): 
-        strategy = PolynomialFilterStrategy(update_rate_in_ms=100, poly_order=3)
+        strategy = PolynomialFilterStrategy(poly_degree=3)
         self.filter = Filter(strategy, history_size=self.history_size)
         self.generate_linear_state_history()
 
@@ -23,7 +23,7 @@ class TestCarFilter(TestCase):
         self.assertAlmostEqual(result[0,2], 11.)
 
     def test_future(self): 
-        strategy = PolynomialFilterStrategy(update_rate_in_ms=100, poly_order=3, predict_samples=2)
+        strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2)
         self.filter = Filter(strategy, history_size=self.history_size)
         self.generate_linear_state_history()
 
@@ -42,7 +42,7 @@ class TestCarFilter(TestCase):
         self.assertAlmostEqual(result[1,3], 13.)
 
     def test_execution_time(self): 
-        strategy = PolynomialFilterStrategy(update_rate_in_ms=100, poly_order=3, predict_samples=2)
+        strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2)
         self.filter = Filter(strategy, history_size=self.history_size)
         self.generate_linear_state_history()
 
@@ -57,7 +57,7 @@ class TestCarFilter(TestCase):
         self.assertLessEqual(delta_in_ms, 1.0)
 
     def test_outliers(self): 
-        strategy = PolynomialFilterStrategy(update_rate_in_ms=100, poly_order=3, predict_samples=2)
+        strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2, outlier_rejection_ratio=2.0)
         self.filter = Filter(strategy, history_size=self.history_size)
         self.generate_outlier_state_history()
 

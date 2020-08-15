@@ -8,7 +8,7 @@ Set up your filter:
 ```
 from filter import Filter, PolynomialFilterStrategy
 
-strategy = PolynomialFilterStrategy(update_rate_in_ms=100, poly_order=3, predict_samples=2)
+strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2, outlier_rejection_ratio=2.0)
 self.filter = Filter(strategy, history_size=10)
 ```
 

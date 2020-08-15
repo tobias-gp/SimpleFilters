@@ -13,9 +13,8 @@ class PolynomialFilterStrategy(FilterStrategy):
 
     number_of_dimensions = 4
 
-    def __init__(self, update_rate_in_ms=500, poly_order=3, predict_samples=1, reject_outliers=True, outlier_rejection_ratio=2.0): 
-        self.update_rate_in_ms = update_rate_in_ms
-        self.poly_order = poly_order
+    def __init__(self, poly_degree=3, predict_samples=1, reject_outliers=True, outlier_rejection_ratio=2.0): 
+        self.poly_degree = poly_degree
         self.predict_samples = predict_samples
         self.reject_outliers = reject_outliers
         self.outlier_rejection_ratio = outlier_rejection_ratio
@@ -51,7 +50,7 @@ class PolynomialFilterStrategy(FilterStrategy):
             y = y[mask]
 
         # now fit the filter function
-        coeffs = np.polyfit(y, x, self.poly_order)
+        coeffs = np.polyfit(y, x, self.poly_degree)
         poly_fn = np.poly1d(coeffs)
 
         # now evaluate the functions at time points t E (0, ..., predict_samples)
