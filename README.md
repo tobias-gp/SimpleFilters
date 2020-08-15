@@ -1,14 +1,14 @@
 # Simple Filters
 
-This is a collection of simple filters to filter a multi-dimensional time series. 
+This is a collection of simple filters to filter a multi-dimensional time series with real-time performance. 
 
 ## Usage
 
 Set up your filter: 
 ```
-from filter import Filter, CarFilterStrategy
+from filter import Filter, PolynomialFilterStrategy
 
-strategy = CarFilterStrategy(update_rate_in_ms=100, poly_order=3, predict_samples=2)
+strategy = PolynomialFilterStrategy(update_rate_in_ms=100, poly_order=3, predict_samples=2)
 self.filter = Filter(strategy, history_size=10)
 ```
 

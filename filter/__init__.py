@@ -1,3 +1,3 @@
 from .filter import Filter, FilterStrategy
-from .car_filter_strategy import CarFilterStrategy
+from .polynomial_filter_strategy import PolynomialFilterStrategy
 from .mean_filter_strategy import MeanFilterStrategy
