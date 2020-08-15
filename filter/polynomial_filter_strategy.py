@@ -20,10 +20,6 @@ class PolynomialFilterStrategy(FilterStrategy):
         self.outlier_rejection_ratio = outlier_rejection_ratio
 
     def apply(self, history):
-        """
-        Filter the position of the car by interpolating
-        """
-
         if history is None or history.shape[0] == 0: 
             return None
 
