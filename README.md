@@ -1,4 +1,4 @@
-# Simple Filters and Tracking for Real-time Time-Series Data
+# Simple Filters and Tracking for Time-Series
 
 ![Python package](https://github.com/tobias-gp/SimpleFilters/workflows/Python%20package/badge.svg)
 
