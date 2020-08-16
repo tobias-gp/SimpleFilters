@@ -4,6 +4,11 @@
 
 This is a collection of simple filters based on NumPy, which are optimized for real-time performance. 
 
+Setup: 
+```
+pip install simple-filters
+```
+
 ## Filter
 
 A filter acts as a container for a time-series. The length of the time-series is kept constant after initial filling, according to the ```history_size``` specified. 
