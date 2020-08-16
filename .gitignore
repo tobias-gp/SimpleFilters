@@ -10,3 +10,8 @@ __pycache__/
 
 # Mac stuff
 **/.DS_Store
+
+# Setuptools
+build
+dist
+*.egg-info/
