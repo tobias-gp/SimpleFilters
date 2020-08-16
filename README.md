@@ -10,7 +10,7 @@ Set up your filter:
 ```
 from simple_filters import Filter, PolynomialFilterStrategy
 
-strategy = PolynomialFilterStrategy(poly_degree=3, predict_samples=2, outlier_rejection_ratio=2.0)
+strategy = PolynomialFilterStrategy(poly_degree=3, outlier_rejection_ratio=2.0)
 filter = Filter(strategy, history_size=10)
 ```
 
@@ -19,9 +19,10 @@ Fill the history:
 filter.update([x, y, z, rotation])
 ```
 
-Get the last filtered item, plus future predictions specified by ```predict_samples```: 
+Get the last filtered item at the current_time, or by specifying a time step in the future (```time=1```). 
 ```
-result = filter.eval()
+result_current = filter.eval()
+result_future = filter.eval(time=1)
 ```
 
 ## Filter Strategies
