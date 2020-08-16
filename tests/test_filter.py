@@ -1,13 +1,13 @@
 from unittest import TestCase
 
-from ..simple_filters import Filter, FilterStrategy, MeanFilterStrategy
+from ..simple_filters import Filter, FilterStrategy, DummyFilterStrategy
 
 import pytest
 
 class TestFilter(TestCase):
 
-    def test_mean_filter(self): 
-        strategy = MeanFilterStrategy()
+    def test_dummy_filter(self): 
+        strategy = DummyFilterStrategy()
         filter = Filter(strategy, history_size=10)
 
         for i in range(0, 20): 
@@ -15,11 +15,11 @@ class TestFilter(TestCase):
 
         result = filter.eval()
 
-        self.assertEqual(result[0], 14.5)
-        self.assertEqual(result[1], 15.5)
+        self.assertEqual(result[0], 19)
+        self.assertEqual(result[1], 20)
         
     def test_queue(self):
-        strategy = MeanFilterStrategy()
+        strategy = DummyFilterStrategy()
         filter = Filter(strategy, history_size=10)
 
         for i in range(0, 20): 

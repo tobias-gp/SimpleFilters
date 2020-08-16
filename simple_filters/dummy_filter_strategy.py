@@ -2,7 +2,10 @@ import numpy as np
 
 from . import FilterStrategy
 
-class MeanFilterStrategy(FilterStrategy): 
+class DummyFilterStrategy(FilterStrategy): 
+    """
+    Simply returns the latest item
+    """
 
     def __init__(self): 
         super().__init__()
@@ -15,4 +18,4 @@ class MeanFilterStrategy(FilterStrategy):
         if self.history is None or self.history.shape[0] == 0: 
             return None
 
-        return np.mean(self.history, axis=0)
+        return self.history[self.history.shape[0] - 1]
