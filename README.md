@@ -4,7 +4,6 @@
 
 This is a collection of simple filters based on NumPy, which are optimized for real-time performance. 
 
-Setup: 
 ```
 pip install simple-filters
 ```
