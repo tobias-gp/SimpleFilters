@@ -1,0 +1,2 @@
+include README.md LICENSE NOTICE requirements.txt 
+recursive-include simple_filters *.py
