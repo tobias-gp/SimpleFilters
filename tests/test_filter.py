@@ -11,9 +11,9 @@ class TestFilter(TestCase):
         filter = Filter(strategy, history_size=10)
 
         for i in range(0, 20): 
-            filter.update_state([i, i + 1])
+            filter.update([i, i + 1])
 
-        result = filter.get_filtered_state()
+        result = filter.eval()
 
         self.assertEqual(result[0], 14.5)
         self.assertEqual(result[1], 15.5)
@@ -23,7 +23,7 @@ class TestFilter(TestCase):
         filter = Filter(strategy, history_size=10)
 
         for i in range(0, 20): 
-            filter.update_state([i])
+            filter.update([i])
 
         state = filter.get_history()
 

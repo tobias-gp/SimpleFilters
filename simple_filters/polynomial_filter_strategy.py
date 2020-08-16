@@ -11,27 +11,50 @@ class PolynomialFilterStrategy(FilterStrategy):
     to the median, multiplied by the outlier_rejection_ratio
     """
 
-    def __init__(self, poly_degree=3, predict_samples=1, reject_outliers=True, outlier_rejection_ratio=2.0): 
+    def __init__(self, poly_degree=3, reject_outliers=True, outlier_rejection_ratio=2.0): 
+        super().__init__()
+
         self.poly_degree = poly_degree
-        self.predict_samples = predict_samples
         self.reject_outliers = reject_outliers
         self.outlier_rejection_ratio = outlier_rejection_ratio
+        self.history = None
+        self.poly_fn = None
 
-    def apply(self, history):
-        if history is None or history.shape[0] == 0: 
+    def update(self, history): 
+        self.history = history
+        self.poly_fn = None
+
+    def eval(self, time=0):
+        # we center the time around the latest sample, which will be T=0
+        history_size = self.history.shape[0]
+        offset_time = history_size + time - 1 
+
+        if self.history is None or history_size == 0: 
             return None
 
-        predicted_states = np.zeros((self.predict_samples, history.shape[1]))
+        # if the polynomial functions are not existent, calculate them
+        if self.poly_fn is None: 
+            self.set_polynomials()
+            
+        return self.eval_polynomials(offset_time)
 
-        for i in range(0, history.shape[1]): 
-            predicted_states[:, i] = self.apply_to_series(history[:, i])
+    def eval_polynomials(self, t): 
+        length = self.history.shape[1]
+        predicted_states = np.zeros(length)
+
+        for i in range(0, length): 
+            predicted_states[i] = self.poly_fn[i](t)
 
         return predicted_states
 
-    def apply_to_series(self, x): 
+    def set_polynomials(self): 
+        self.poly_fn = []
+        for i in range(0, self.history.shape[1]): 
+            self.poly_fn.append(self.calc_polynomial(self.history[:, i]))
+
+    def calc_polynomial(self, x): 
         length = x.shape[0]
         y = np.arange(length)
-        predicted = np.zeros(self.predict_samples)
 
         if self.reject_outliers: 
             # reject outliers that are far awy from the median
@@ -47,9 +70,4 @@ class PolynomialFilterStrategy(FilterStrategy):
         coeffs = np.polyfit(y, x, self.poly_degree)
         poly_fn = np.poly1d(coeffs)
 
-        # now evaluate the functions at time points t E (0, ..., predict_samples)
-        for s in range(0, self.predict_samples): 
-            t = length - 1 + s
-            predicted[s] =  poly_fn(t)
-
-        return predicted
+        return poly_fn

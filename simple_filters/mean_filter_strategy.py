@@ -5,10 +5,14 @@ from . import FilterStrategy
 class MeanFilterStrategy(FilterStrategy): 
 
     def __init__(self): 
-        pass
+        super().__init__()
+        self.history = None
 
-    def apply(self, history): 
-        if history is None or history.shape[0] == 0: 
+    def update(self, history): 
+        self.history = history
+
+    def eval(self, time=0): 
+        if self.history is None or self.history.shape[0] == 0: 
             return None
 
-        return np.mean(history, axis=0)
+        return np.mean(self.history, axis=0)

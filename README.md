@@ -16,12 +16,12 @@ filter = Filter(strategy, history_size=10)
 
 Fill the history: 
 ```
-filter.update_state([x, y, z, rotation])
+filter.update([x, y, z, rotation])
 ```
 
 Get the last filtered item, plus future predictions specified by ```predict_samples```: 
 ```
-result = filter.get_filtered_state()
+result = filter.eval()
 ```
 
 ## Filter Strategies
