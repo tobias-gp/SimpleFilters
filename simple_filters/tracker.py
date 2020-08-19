@@ -78,7 +78,7 @@ class Tracker:
         ## Build the distance matrix and match objects
         # We build a matrix that contains the distances of the tracked objects 
         # with its predicted state (determined by the filter) and the new states which just came in
-        if number_of_tracked_objects > 0: 
+        if number_of_tracked_objects > 0 and number_of_states > 0: 
 
             # Calculate the distance matrix, the complexity is n^2
             distance_matrix = np.zeros((number_of_tracked_objects, number_of_states))
