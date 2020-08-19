@@ -64,14 +64,17 @@ class Tracker:
 
         states = np.array(states)
 
-        # check if array is 2d, otherwise make it so
+        # check if the states array is 2d, otherwise make it so
         if len(states.shape) == 1: 
             states = np.array([states])
 
-        # set initial properties
-        number_of_states = states.shape[0]
+        # check if the states array is empty
+        if states.size == 0: 
+            number_of_states = 0
+        else: 
+            number_of_states = states.shape[0]
+        
         number_of_tracked_objects = len(self.__tracked_objects)
-
         objects_to_match = [i for i in range(0, number_of_tracked_objects)] 
         states_to_match = [i for i in range(0, number_of_states)]
 
