@@ -30,11 +30,15 @@ class Tracker:
     Implements an multi-object tracker, that can use the given filters
     """
 
-    def __init__(self, filter_prototype, time_to_live=0, distance_threshold=1.0): 
+    def __init__(self, filter_prototype, 
+                    time_to_live=0, 
+                    distance_threshold=1.0, 
+                    distance_function=lambda x1, x2: np.linalg.norm(x1 - x2)): 
         self.distance_threshold = distance_threshold
         self.time_to_live = time_to_live
         self.object_counter = 0
 
+        self.__distance_function = distance_function
         self.__filter_prototype = filter_prototype
         self.__tracked_objects = []
 
@@ -91,8 +95,7 @@ class Tracker:
 
                 for s in range(0, number_of_states): 
                     state = states[s, :]
-                    # TODO: Should this be moved to filter strategy?
-                    distance_matrix[t, s] = np.linalg.norm(pred_state - state)
+                    distance_matrix[t, s] = self.__distance_function(pred_state, state)
 
             # Now we match the tracked objects to the objects in the distance matrix 
             # Clearly, this is not the optimal solution (but fast), since it doesn't 
