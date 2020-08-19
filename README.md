@@ -1,8 +1,12 @@
 # Simple Filters and Tracking for Time-Series using NumPy
 
-![Python package](https://github.com/tobias-gp/SimpleFilters/workflows/Python%20package/badge.svg)
+![Python package](https://github.com/tobias-gp/SimpleFilters/workflows/Python%20package/badge.svg) ![Upload Python Package](https://github.com/tobias-gp/SimpleFilters/workflows/Upload%20Python%20Package/badge.svg)
 
 This is a collection of simple filters based on NumPy, which are optimized for real-time performance. 
+
+```
+pip install simple-filters
+```
 
 ## Filter
 
