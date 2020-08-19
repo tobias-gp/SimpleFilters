@@ -34,7 +34,7 @@ filter.update([1.0, 2.0])
 filter.update([1.1, 2.1])
 ```
 
-Get the last filtered item at the current_time, or by specifying a time step in the future (```time=1```). 
+Get the last filtered item at the current_time, or by specifying a time step in the future (```time=1```). Note that only **PolynomialFilterStrategy** allows for predicting the future. 
 ```
 result_current = filter.eval()
 result_future = filter.eval(time=1)
