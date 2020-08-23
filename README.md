@@ -46,7 +46,8 @@ Oftentimes, multiple objects must be tracked that also require filtering. Simple
 
 The following properties can be defined: 
 * **distance_threshold**: Maximum distance to match objects - when the threshold is exceeded, a new object will be created 
-* **time_to_live**: If an object is not seen, it is still retained for the given number of state updates
+* **max_time_to_live**: If an object is not seen, it is still retained for the given number of state updates
+* **time_to_birth**: The number of observations needed until an object is born 
 * **filter_prototype**: A filter that will be cloned for each new appearing object
 
 The **PolynomialFilterStrategy** is especially suitable for tracking, as it can predict the future state of the object according to its reconstructed polynomial: 
