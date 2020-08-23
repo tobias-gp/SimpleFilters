@@ -25,15 +25,16 @@ class TestTracker(TestCase):
         self.static_update_and_assert(1, 1, 2)
 
     def test_tracker_delete_objects_time_to_live(self): 
-        self.tracker.time_to_live = 1
+        self.tracker.max_time_to_live = 2
 
         self.static_update_and_assert(2, 2, 2)
+        self.static_update_and_assert(2, 2, 2) # increment ttl counter to 2
         self.static_update_and_assert(1, 2, 2) # object should be retained, even if it doesn't appear
         self.static_update_and_assert(1, 1, 2) # object should be removed after this update
 
     def test_tracker_mapping(self): 
         # TODO: This assumes that the order is retained, but makes it easier for testing
-        reference_matrix = np.array([[1., 1., 2.], [2., 2., 3.]])
+        reference_matrix = np.array([[1., 2., 1.], [2., 3., 2.]])
 
         self.tracker.update(self.generate_static_states(2))
         self.assertTrue((self.tracker.to_numpy_array() == reference_matrix).all())

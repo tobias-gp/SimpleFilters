@@ -8,10 +8,21 @@ class TrackedObject(Filter):
     Acts as a simple proxy to the actual filter provided in the initialization
     """
 
-    def __init__(self, id, filter): 
+    def __init__(self, id, filter, max_time_to_live): 
         self.id = id
         self.filter = filter
-        self.time_to_live = 0
+        self.time_to_live = 1
+        self.max_time_to_live = max_time_to_live
+
+    def increase_time_to_live(self): 
+        if self.time_to_live < self.max_time_to_live: 
+            self.time_to_live += 1
+
+    def decrease_time_to_live(self): 
+        if self.time_to_live > 0: 
+            self.time_to_live -= 1
+        else:
+            self.time_to_live = 0
 
     def update(self, state): 
         self.filter.update(state)
@@ -31,11 +42,14 @@ class Tracker:
     """
 
     def __init__(self, filter_prototype, 
-                    time_to_live=0, 
+                    max_time_to_live=1, 
+                    time_to_birth=0,
                     distance_threshold=1.0, 
                     distance_function=lambda x1, x2: np.linalg.norm(x1 - x2)): 
         self.distance_threshold = distance_threshold
-        self.time_to_live = time_to_live
+        self.max_time_to_live = max_time_to_live
+        self.time_to_birth = time_to_birth
+
         self.object_counter = 0
 
         self.__distance_function = distance_function
@@ -43,20 +57,20 @@ class Tracker:
         self.__tracked_objects = []
 
     def get_tracked_objects(self): 
-        return self.__tracked_objects
+        return list(filter(lambda x: x.time_to_live > self.time_to_birth, self.__tracked_objects))
 
     def to_numpy_array(self, raw=False): 
         """
         Returns the tracking id, plus the filtered object state if raw is False
         """
         m = []
-        for t in self.__tracked_objects: 
+        for t in self.get_tracked_objects(): 
             if raw: 
                 state = t.raw()
             else: 
                 state = t.eval()
             
-            m.append(np.insert(state, 0, t.id))
+            m.append(np.insert(np.array(t.id, dtype=np.float32), 0, state))
 
         return np.array(m)
 
@@ -118,6 +132,7 @@ class Tracker:
                 if t in objects_to_match and s in states_to_match: 
                     objects_to_match.remove(t)
                     states_to_match.remove(s)
+                    self.__tracked_objects[t].increase_time_to_live()
                     self.__tracked_objects[t].update(states[s])
 
         ## Delete objects
@@ -127,9 +142,9 @@ class Tracker:
         removals = []
         for i in objects_to_match: 
             tracked_object = self.__tracked_objects[i]
-            tracked_object.time_to_live += 1
+            tracked_object.decrease_time_to_live()
 
-            if tracked_object.time_to_live > self.time_to_live: 
+            if tracked_object.time_to_live < 1: 
                 removals.append(tracked_object)
             else:  
                 # update the object with the next predicted state
@@ -142,6 +157,10 @@ class Tracker:
         # now go through all unmatched objects and create new objects
         for i in states_to_match: 
             self.object_counter += 1
-            added_object = TrackedObject(self.object_counter, deepcopy(self.__filter_prototype))
+            added_object = TrackedObject(
+                                self.object_counter, 
+                                deepcopy(self.__filter_prototype), 
+                                max_time_to_live=self.max_time_to_live
+                            )
             added_object.update(states[i])
             self.__tracked_objects.append(added_object)

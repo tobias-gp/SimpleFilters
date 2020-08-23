@@ -34,7 +34,7 @@ class TestSingleStepSingleObjectTracking(TestCase):
     def test_interpolate_object_with_ttl(self):
         strategy = PolynomialFilterStrategy(poly_degree=1, reject_outliers=False)
         filter_prototype = Filter(strategy, history_size=3)
-        tracker = Tracker(filter_prototype, distance_threshold=1., time_to_live=1)
+        tracker = Tracker(filter_prototype, distance_threshold=1., max_time_to_live=2)
 
         states = [
             np.array([[1.0, 1.0]]),

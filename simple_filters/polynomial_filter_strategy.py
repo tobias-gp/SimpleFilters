@@ -11,13 +11,15 @@ class PolynomialFilterStrategy(FilterStrategy):
     to the median, multiplied by the outlier_rejection_ratio
     """
 
-    def __init__(self, poly_degree=3, reject_outliers=True, outlier_rejection_ratio=2.0): 
+    def __init__(self, poly_degree=3, reject_outliers=True, outlier_rejection_ratio=2.0, filter_weight=1.0, max_items=None): 
         super().__init__()
 
         self.poly_degree = poly_degree
         self.reject_outliers = reject_outliers
         self.outlier_rejection_ratio = outlier_rejection_ratio
+        self.max_items = max_items
         self.history = None
+        self.filter_weight = filter_weight
 
         self.__poly_fn = None
 
@@ -33,16 +35,28 @@ class PolynomialFilterStrategy(FilterStrategy):
         history_size = self.history.shape[0]
         offset_time = history_size + time - 1 
 
+        # for debugging purposes
+        if self.poly_degree == 0: 
+            return self.history[history_size - 1]
+
         # in the case that the equation is underdetermined, we cannot predict a polynomial
         # simply return the last state in the history
         if history_size < self.poly_degree + 1: 
             return self.history[history_size - 1]
-            
+        
         # if the polynomial functions are not existent, calculate them
         if self.__poly_fn is None: 
             self.__update_polynomials()
             
-        return self.__eval_polynomials(offset_time)
+        predictions = self.__eval_polynomials(offset_time)
+
+        # finally applying a weight to the prediction
+        if time <= 0: 
+            result = (self.filter_weight * predictions) + ((1 - self.filter_weight) * self.history[offset_time])
+        else:
+            result = predictions
+
+        return result
 
     def __eval_polynomials(self, t): 
         length = self.history.shape[1]
@@ -69,6 +83,7 @@ class PolynomialFilterStrategy(FilterStrategy):
             rel_delta = delta / np.median(delta)
             
             mask = rel_delta < self.outlier_rejection_ratio
+
             x = x[mask]
             y = y[mask]
 
