@@ -1,6 +1,8 @@
 import numpy as np
 from copy import deepcopy
 
+from scipy.optimize import linear_sum_assignment
+
 from . import Filter
 
 class TrackedObject(Filter): 
@@ -112,28 +114,20 @@ class Tracker:
                     distance_matrix[t, s] = self.__distance_function(pred_state, state)
 
             # Now we match the tracked objects to the objects in the distance matrix 
-            # Clearly, this is not the optimal solution (but fast), since it doesn't 
-            # optimize for the cumulative distance of pairs
-            # Whenever a minimum was found, we invalidate this part in the distance matrix
-            while True: 
-                min_distance = np.min(distance_matrix)
-                index = np.argwhere(distance_matrix == min_distance)[0]
-                
-                # when the distance threshold is exceeded, it means we are seeing new objects, 
-                # or existing ones shall be removed
-                if min_distance > self.distance_threshold: 
-                    break
+            # We do this by applying minimum weight matching in bipartite graphs: 
+            # https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html 
+            object_indices, state_indices = linear_sum_assignment(distance_matrix)
 
-                t = index[0] # just to avoid confusion, this is the object
-                s = index[1] # and this the state
-                distance_matrix[t, s] = np.inf # invalidate this part of the distance matrix
+            for (t, s) in zip(object_indices, state_indices): 
+                d = distance_matrix[t, s]
                 
-                # if the state has not previously been associated to a tracked object
-                if t in objects_to_match and s in states_to_match: 
-                    objects_to_match.remove(t)
-                    states_to_match.remove(s)
-                    self.__tracked_objects[t].increase_time_to_live()
-                    self.__tracked_objects[t].update(states[s])
+                if d > self.distance_threshold: 
+                    continue
+
+                objects_to_match.remove(t)
+                states_to_match.remove(s)
+                self.__tracked_objects[t].increase_time_to_live()
+                self.__tracked_objects[t].update(states[s])
 
         ## Delete objects
         # Remove an object that has not been seen when its time-to-live is exceeded
