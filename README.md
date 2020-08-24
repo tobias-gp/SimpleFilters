@@ -2,11 +2,14 @@
 
 ![Python package](https://github.com/tobias-gp/SimpleFilters/workflows/Python%20package/badge.svg) ![Upload Python Package](https://github.com/tobias-gp/SimpleFilters/workflows/Upload%20Python%20Package/badge.svg)
 
-This is a collection of simple filters based on NumPy, which are optimized for real-time performance. 
 
 ```
 pip install simple-filters
 ```
+
+This is a collection of simple filters and trackers based on NumPy and SciPy, which are optimized for real-time performance.  This is an example that applies tracking to non-recurrent methods like [SMOKE](https://ieeexplore.ieee.org/document/8730300) with the **DummyFilterStrategy**: 
+
+<div style="text-align:center"><img src="doc/tracking.gif" alt="Tracking vehicles based on detections from the SMOKE algorithm" /></div>
 
 ## Filter
 
