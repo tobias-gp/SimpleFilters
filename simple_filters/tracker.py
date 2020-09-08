@@ -50,7 +50,7 @@ class Tracker:
 
     def __init__(self, filter_prototype, 
                     max_time_to_live=1, 
-                    time_to_birth=0,
+                    time_to_birth=1,
                     distance_threshold=1.0, 
                     distance_function=lambda x1, x2: np.linalg.norm(x1 - x2)): 
         self.distance_threshold = distance_threshold
