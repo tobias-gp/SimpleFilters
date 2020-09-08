@@ -10,15 +10,20 @@ class TrackedObject(Filter):
     Acts as a simple proxy to the actual filter provided in the initialization
     """
 
-    def __init__(self, id, filter, max_time_to_live): 
+    def __init__(self, id, filter, max_time_to_live, time_to_birth): 
         self.id = id
         self.filter = filter
         self.time_to_live = 1
         self.max_time_to_live = max_time_to_live
+        self.time_to_birth = time_to_birth
+        self.is_born = (self.time_to_birth <= self.time_to_live)
 
     def increase_time_to_live(self): 
         if self.time_to_live < self.max_time_to_live: 
             self.time_to_live += 1
+
+        if not self.is_born: 
+            self.is_born = (self.time_to_birth <= self.time_to_live)
 
     def decrease_time_to_live(self): 
         if self.time_to_live > 0: 
@@ -59,7 +64,7 @@ class Tracker:
         self.__tracked_objects = []
 
     def get_tracked_objects(self): 
-        return list(filter(lambda x: x.time_to_live > self.time_to_birth, self.__tracked_objects))
+        return list(filter(lambda x: x.is_born, self.__tracked_objects))
 
     def to_numpy_array(self, raw=False): 
         """
@@ -154,7 +159,8 @@ class Tracker:
             added_object = TrackedObject(
                                 self.object_counter, 
                                 deepcopy(self.__filter_prototype), 
-                                max_time_to_live=self.max_time_to_live
+                                max_time_to_live=self.max_time_to_live,
+                                time_to_birth=self.time_to_birth
                             )
             added_object.update(states[i])
             self.__tracked_objects.append(added_object)
